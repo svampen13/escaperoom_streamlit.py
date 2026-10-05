@@ -1,6 +1,8 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import time
+import base64
+import os
 
 # Page configuration
 st.set_page_config(
@@ -168,6 +170,23 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+# Background music helper function
+def play_background_music(file_path="bakgrundsmusik.mp3"):
+    if st.session_state.get("enable_audio", True):
+        if os.path.exists(file_path):
+            try:
+                with open(file_path, "rb") as f:
+                    data = f.read()
+                    b64 = base64.b64encode(data).decode()
+                    audio_html = f"""
+                    <audio autoplay loop style="display:none;">
+                        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                    </audio>
+                    """
+                    components.html(audio_html, height=0, width=0)
+            except Exception:
+                pass
 
 # Audio synthesis via WebAudio API (heartbeat for menu, sound effects for gameplay)
 def play_audio(sound_type):
@@ -403,6 +422,7 @@ if not st.session_state.game_started:
 # Active Game View
 else:
     play_audio("stop_heartbeat")
+    play_background_music("bakgrundsmusik.mp3")
     theme = THEMES[st.session_state.selected_theme]
     stages = theme["stages"]
     
