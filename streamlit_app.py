@@ -293,7 +293,7 @@ THEMES = {
                 "next_btn": "FORTSÄTT TILL ETAPP 2 →"
             },
             {
-                "title": "ETAPP 2: Vittnesförhören",
+                "title": "ETAPP 2: Vittnesförhören & Alibin",
                 "prompt": "Studera förhören i Kuvert 2. Skriv in koden du får fram:",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
@@ -442,17 +442,32 @@ else:
         st.balloons()
         st.markdown("<h1 style='text-align: center; color: #4ade80;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
         st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Samtliga koder har knäckts.</h3>", unsafe_allow_html=True)
+
         
-        # Display Elice image if present
-        elice_img = None
-        for fn in os.listdir("."):
-            if fn.lower().startswith("elice") and fn.lower().endswith((".png", ".jpg", ".jpeg")):
-                elice_img = fn
+        # Display Elice Image and Jail Overlay
+        elice_file = None
+        for f_name in ["elice.png", "elice.jpg", "elice.jpeg", "Elice.png", "Elice.jpg"]:
+            if os.path.exists(f_name):
+                elice_file = f_name
                 break
-        if elice_img:
-            col_img_1, col_img_2, col_img_3 = st.columns([1, 2, 1])
-            with col_img_2:
-                st.image(elice_img, caption="ARRESTERAD: ELICE", use_column_width=True)
+
+        col_a, col_b, col_c = st.columns([1, 1.2, 1])
+        with col_b:
+            if elice_file:
+                st.image(elice_file, caption="ARRESTERAD: ELICE SKUGGAN", use_container_width=True)
+            else:
+                st.info("📷 Ladda upp elice.png till din GitHub-mapp för att visa Elices porträtt här!")
+            
+            st.markdown("""
+            <div style="background-color:#991b1b; color:#ffffff; padding:10px; border-radius:8px; text-align:center; font-weight:bold; font-size:22px; border:2px solid #ef4444; margin-top:10px;">
+                🔒 LÅS OCH BOM — FALLET AVSLUTAT
+            </div>
+            """, unsafe_allow_html=True)
+
+            
+        
+            
+
         
         # Final summary log
         if st.session_state.solved_log:
