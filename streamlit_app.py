@@ -188,7 +188,7 @@ def play_background_music(file_path="bakgrundsmusik.mp3"):
             except Exception:
                 pass
 
-# Audio synthesis via WebAudio API (heartbeat for menu, sound effects for gameplay)
+# Audio synthesis via WebAudio API
 def play_audio(sound_type):
     if st.session_state.get("enable_audio", True):
         if sound_type == "heartbeat":
@@ -198,22 +198,20 @@ def play_audio(sound_type):
                 function playBeat() {
                     try {
                         var now = ctx.currentTime;
-                        // First thump (lub)
                         var osc1 = ctx.createOscillator();
                         var gain1 = ctx.createGain();
                         osc1.connect(gain1); gain1.connect(ctx.destination);
-                        osc1.type = 'sine';
+                        osc1.type = "sine";
                         osc1.frequency.setValueAtTime(60, now);
                         osc1.frequency.exponentialRampToValueAtTime(30, now + 0.12);
                         gain1.gain.setValueAtTime(0.3, now);
                         gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
                         osc1.start(now); osc1.stop(now + 0.12);
 
-                        // Second thump (dub)
                         var osc2 = ctx.createOscillator();
                         var gain2 = ctx.createGain();
                         osc2.connect(gain2); gain2.connect(ctx.destination);
-                        osc2.type = 'sine';
+                        osc2.type = "sine";
                         osc2.frequency.setValueAtTime(50, now + 0.18);
                         osc2.frequency.exponentialRampToValueAtTime(25, now + 0.32);
                         gain2.gain.setValueAtTime(0.25, now + 0.18);
@@ -240,7 +238,7 @@ def play_audio(sound_type):
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+            osc.type = "sine"; osc.frequency.setValueAtTime(523.25, ctx.currentTime);
             osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.15);
             gain.gain.setValueAtTime(0.25, ctx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
@@ -253,7 +251,7 @@ def play_audio(sound_type):
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(180, ctx.currentTime);
+            osc.type = "sawtooth"; osc.frequency.setValueAtTime(180, ctx.currentTime);
             osc.frequency.setValueAtTime(130, ctx.currentTime + 0.15);
             gain.gain.setValueAtTime(0.2, ctx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
@@ -267,7 +265,7 @@ def play_audio(sound_type):
                 var osc = ctx.createOscillator();
                 var gain = ctx.createGain();
                 osc.connect(gain); gain.connect(ctx.destination);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(freq, ctx.currentTime + idx*0.2);
+                osc.type = "sine"; osc.frequency.setValueAtTime(freq, ctx.currentTime + idx*0.2);
                 gain.gain.setValueAtTime(0.25, ctx.currentTime + idx*0.2);
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx*0.2 + 0.5);
                 osc.start(ctx.currentTime + idx*0.2);
@@ -285,20 +283,20 @@ THEMES = {
         "stages": [
             {
                 "title": "ETAPP 1: Brottsplatsen",
-                "prompt": "Undersök brottsplatskartan i Kuvert 1 med hjälp av verktygen i utredningsväskan. Skriv in koden du får fram:",
+                "prompt": "Undersök materialet i Kuvert 1. Skriv in koden du får fram:",
                 "code": "42",
                 "summary": "Fotspår storlek 42 bekräftat på brottsplatsen.",
-                "hint": "Ledtråd: Vissa spår på kartan syns inte i vanligt ljus. Titta i utredningsväskan efter ett verktyg som avslöjar dolda tecken, mät spåret och jämför med tabellen i Bevishandboken.",
-                "success_msg": "KOD GODKÄND!\n\nSpåret är bekräftat. Använd informationen för att granska de 6 personalakterna i er utredningsväska.\n\n📍 GÅ TILL BOKHYLLAN I KLASSRUMMET OCH HÄMTA KUVERT 2!",
+                "hint": "Ledtråd: Använd UV-lampan ur utredningsväskan på fotspåret i Kuvert 1 för att avläsa den dolda skostorleken. Jämför med de 6 personalakterna.",
+                "success_msg": "KOD GODKÄND!\n\nSpåret är bekräftat (skostorlek 42). Använd informationen för att granska de 6 personalakterna i er utredningsväska.\n\n📍 GÅ TILL BOKHYLLAN I KLASSRUMMET OCH HÄMTA KUVERT 2!",
                 "next_btn": "FORTSÄTT TILL ETAPP 2 →"
             },
             {
-                "title": "ETAPP 2: Vittnesförhören & Alibin",
-                "prompt": "Studera förhören i Kuvert 2 och jämför med tiderna. Skriv in koden för klockslaget då brottet ägde rum (4 siffror):",
+                "title": "ETAPP 2: Vittnesförhören",
+                "prompt": "Studera förhören i Kuvert 2. Skriv in koden du får fram:",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
-                "hint": "Ledtråd: Sortera vittnesmålen i tidsordning och identifiera vilket klockslag som har en lucka utan bekräftade observationer.",
-                "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Jämför klockslaget med alibin på korten i kuvertet.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
+                "hint": "Ledtråd: Räkna stavfelen i förhörsprotokollets fyra avsnitt (1 fel, 5 fel, 0 fel, 0 fel = 1500, dvs kl. 15:00). Jämför alibin på de 6 personalakterna.",
+                "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Jämför klockslaget med alibin på de 6 personalakterna.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
                 "next_btn": "FORTSÄTT TILL ETAPP 3 →"
             },
             {
@@ -306,16 +304,16 @@ THEMES = {
                 "prompt": "Granska brevet i Kuvert 3. Skriv in koden du får fram:",
                 "code": "HÖGER",
                 "summary": "Förövaren bekräftad HÖGERHÄNT.",
-                "hint": "Ledtråd: Granska bläckdraget och lutningen i handstilen. Jämför med guiden i Bevishandboken.",
-                "success_msg": "KOD GODKÄND!\n\nFörövaren är bekräftad HÖGERHÄNT. Granska profilerna på era misstänkta-kort i kuvertet.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
+                "hint": "Ledtråd: Spegla rapporten i Kuvert 3 i en spegel eller mot fönstret. Läs den tekniska slutsatsen angående förövarens handstil.",
+                "success_msg": "KOD GODKÄND!\n\nFörövaren är bekräftad HÖGERHÄNT. Eliminera vänsterhänta personer från era 6 personalakter.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
                 "next_btn": "FORTSÄTT TILL ETAPP 4 →"
             },
             {
                 "title": "ETAPP 4: Slutgiltigt Chiffer",
-                "prompt": "Använd chiffermallen ur Kuvert 4 över bokstavsarket. Skriv in namnet på den skyldige:",
+                "prompt": "Använd materialet i Kuvert 4. Skriv in koden du får fram:",
                 "code": "ELICE",
                 "summary": "Den skyldige identifierad: ELICE.",
-                "hint": "Ledtråd: Lägg hålmallen exakt över hörnmarkeringarna på bokstavsarket. Läs bokstäverna från vänster till höger.",
+                "hint": "Ledtråd: Lägg hålmallens stjärnmärkta hörn mot loggbokens övre högra hörn. Läs bokstäverna i fönstren i ordningsföljd.",
                 "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE! Utmärkt utredningsarbete!",
                 "next_btn": "AVSLUTA UPPDRAGET"
             }
@@ -350,6 +348,8 @@ if "timer_minutes" not in st.session_state:
     st.session_state.timer_minutes = 0
 if "start_time" not in st.session_state:
     st.session_state.start_time = 0
+if "stage_start_time" not in st.session_state:
+    st.session_state.stage_start_time = 0
 if "enable_audio" not in st.session_state:
     st.session_state.enable_audio = True
 if "solved_log" not in st.session_state:
@@ -363,6 +363,7 @@ if st.sidebar.button("Nollställ / Huvudmeny"):
     st.session_state.stage_cleared = False
     st.session_state.show_hint = False
     st.session_state.solved_log = []
+    st.session_state.stage_start_time = 0
     st.rerun()
 
 # Main Menu View
@@ -417,6 +418,7 @@ if not st.session_state.game_started:
             st.session_state.show_hint = False
             st.session_state.solved_log = []
             st.session_state.start_time = time.time()
+            st.session_state.stage_start_time = time.time()
             st.rerun()
 
 # Active Game View
@@ -443,109 +445,40 @@ else:
         st.markdown("<h1 style='text-align: center; color: #4ade80;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
         st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Samtliga koder har knäckts.</h3>", unsafe_allow_html=True)
         
-        # Check for Elice image file
-        elice_b64 = None
-        for img_name in ['elice.png', 'elice.jpg', 'elice.jpeg', 'Elice.png', 'Elice.jpg', 'elice_skuggan.png']:
-            if os.path.exists(img_name):
-                try:
-                    with open(img_name, 'rb') as f:
-                        elice_b64 = base64.b64encode(f.read()).decode()
-                    break
-                except Exception:
-                    pass
-        
-        if elice_b64:
-            img_content = f'<img src="data:image/png;base64,{elice_b64}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">'
+        # Display Elice Image with Jail Bars overlay
+        elice_file = None
+        for file_name in os.listdir("."):
+            fn_lower = file_name.lower()
+            if "elice" in fn_lower and fn_lower.endswith((".png", ".jpg", ".jpeg", ".webp")) and not fn_lower.endswith("preview.png"):
+                elice_file = file_name
+                break
+                
+        if elice_file:
+            try:
+                with open(elice_file, "rb") as img_f:
+                    img_data = base64.b64encode(img_f.read()).decode()
+                
+                jail_html = f"""
+                <div style="max-width: 420px; margin: 25px auto; position: relative; background: #0f172a; border: 4px solid #ef4444; border-radius: 12px; overflow: hidden; box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);">
+                    <div style="position: relative; width: 100%; text-align: center;">
+                        <img src="data:image/png;base64,{img_data}" style="width: 100%; height: auto; display: block;">
+                        <!-- Animated Jail Bars Overlay -->
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-around; pointer-events: none; background: repeating-linear-gradient(90deg, transparent, transparent 35px, #1e293b 35px, #0f172a 45px, #334155 50px);"></div>
+                        <!-- Stamp -->
+                        <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg); background: rgba(220, 38, 38, 0.95); color: white; padding: 10px 25px; font-size: 28px; font-weight: 900; letter-spacing: 3px; border: 4px solid white; text-shadow: 2px 2px 4px black; box-shadow: 0 0 15px rgba(0,0,0,0.8); border-radius: 8px;">ARRESTERAD</div>
+                    </div>
+                    <div style="background: #1e293b; color: #f8fafc; text-align: center; padding: 14px; font-size: 20px; font-weight: bold; border-top: 2px solid #ef4444;">
+                        ELICE "SKUGGAN" SVENSSON<br>
+                        <span style="font-size: 14px; color: #ef4444; font-weight: normal;">DEN SKYLDIGE I SNS-MYSTERIET</span>
+                    </div>
+                </div>
+                """
+                components.html(jail_html, height=520)
+            except Exception:
+                st.info("🔒 ARRESTERAD: ELICE SVENSSON (\"SKUGGAN\")")
         else:
-            img_content = """<div style="width:100%; height:100%; background: #1e293b; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:8px;">
-                <div style="font-size: 70px;">👤</div>
-                <div style="color: #94a3b8; font-weight: bold; font-size: 18px; margin-top: 10px;">ELICE "SKUGGAN"</div>
-                <div style="color: #ef4444; font-size: 13px; margin-top: 6px; padding: 0 12px; text-align: center;">Ladda upp <b>elice.png</b> till din GitHub-mapp så visas hennes bild här!</div>
-            </div>"""
+            st.info("📷 **Bildnotis:** Ladda upp en bildfil döpt till `elice.png` i samma mapp på GitHub för att visa fotot på Elice bakom fängelsegallret här!")
 
-        jail_animation_html = f"""
-        <style>
-        @keyframes dropBars {{
-            0% {{ transform: translateY(-100%); }}
-            100% {{ transform: translateY(0); }}
-        }}
-        @keyframes stampIn {{
-            0% {{ transform: scale(3) rotate(-15deg); opacity: 0; }}
-            80% {{ transform: scale(0.9) rotate(-15deg); opacity: 1; }}
-            100% {{ transform: scale(1) rotate(-15deg); opacity: 1; }}
-        }}
-        .jail-card {{
-            background-color: #1e293b;
-            border: 3px solid #ef4444;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
-            border-radius: 12px;
-            padding: 20px;
-            max-width: 380px;
-            margin: 25px auto;
-            text-align: center;
-        }}
-        .jail-frame {{
-            position: relative;
-            width: 280px;
-            height: 350px;
-            margin: 0 auto;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 4px solid #334155;
-            background-color: #0f172a;
-        }}
-        .jail-bars {{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                90deg,
-                #0f172a 0px,
-                #0f172a 14px,
-                #475569 14px,
-                #94a3b8 18px,
-                #1e293b 22px,
-                transparent 22px,
-                transparent 48px
-            );
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
-            animation: dropBars 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            z-index: 2;
-        }}
-        .jail-stamp {{
-            position: absolute;
-            top: 40%;
-            left: 5%;
-            width: 90%;
-            border: 4px solid #ef4444;
-            color: #ef4444;
-            font-size: 26px;
-            font-weight: 900;
-            text-transform: uppercase;
-            padding: 8px 0;
-            letter-spacing: 2px;
-            background: rgba(15, 23, 42, 0.9);
-            transform: rotate(-15deg);
-            animation: stampIn 0.6s ease-out 0.9s forwards;
-            opacity: 0;
-            z-index: 3;
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
-        }}
-        </style>
-        <div class="jail-card">
-            <div style="font-size: 22px; font-weight: 800; color: #f8fafc; margin-bottom: 12px; letter-spacing: 1px;">🔒 ARRESTERAD: ELICE "SKUGGAN"</div>
-            <div class="jail-frame">
-                {img_content}
-                <div class="jail-bars"></div>
-                <div class="jail-stamp">LÅS OCH BOM</div>
-            </div>
-            <div style="color: #cbd5e1; font-size: 15px; margin-top: 14px; font-weight: 600;">PEKADES UT AV HÅLMALLEN I LOGGBOKEN</div>
-        </div>
-        """
-        st.markdown(jail_animation_html, unsafe_allow_html=True)
-        
         # Final summary log
         if st.session_state.solved_log:
             st.markdown("<div class='log-card'>", unsafe_allow_html=True)
@@ -560,10 +493,16 @@ else:
             st.session_state.current_stage = 0
             st.session_state.stage_cleared = False
             st.session_state.solved_log = []
+            st.session_state.stage_start_time = 0
             st.rerun()
+
     else:
         stage = stages[st.session_state.current_stage]
         
+        # Ensure stage start time is recorded
+        if st.session_state.get("stage_start_time", 0) == 0:
+            st.session_state.stage_start_time = time.time()
+            
         st.markdown(f"## {stage['title']}")
         st.markdown(f"#### {stage['prompt']}")
         
@@ -573,11 +512,23 @@ else:
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("LÅS UPP", type="primary", use_container_width=True):
-                    if code_input.lower() == stage["code"].lower():
+                    user_raw = code_input.strip().upper()
+                    user_clean = user_raw.replace(":", "").replace(".", "").replace(" ", "").replace("KL", "")
+                    target_code = stage["code"].strip().upper()
+                    target_clean = target_code.replace(":", "").replace(".", "").replace(" ", "")
+                    
+                    is_correct = False
+                    if user_raw == target_code or user_clean == target_clean:
+                        is_correct = True
+                    elif target_code == "1500" and user_clean in ["1500", "15000", "15:00", "15.00"]:
+                        is_correct = True
+                    elif target_code == "ELICE" and user_clean in ["ELICE", "ELICESVENSSON"]:
+                        is_correct = True
+                        
+                    if is_correct:
                         st.session_state.stage_cleared = True
                         st.session_state.show_hint = False
                         
-                        # Add to solved log
                         log_entry = f"Etapp {st.session_state.current_stage + 1}: Kod {stage['code']} ({stage['summary']})"
                         if log_entry not in st.session_state.solved_log:
                             st.session_state.solved_log.append(log_entry)
@@ -587,9 +538,19 @@ else:
                     else:
                         play_audio("wrong")
                         st.error("Felaktig kod. Försök igen eller använd ledtråden.")
+
             with col2:
-                if st.button("Visa ledtråd", use_container_width=True):
-                    st.session_state.show_hint = True
+                # 4-minute time lock for hints
+                HINT_LOCK_SECONDS = 240 # 4 minutes = 240 seconds
+                stage_elapsed = time.time() - st.session_state.stage_start_time
+                
+                if stage_elapsed < HINT_LOCK_SECONDS:
+                    rem_sec = int(HINT_LOCK_SECONDS - stage_elapsed)
+                    m, s = divmod(rem_sec, 60)
+                    st.button(f"🔒 Visa ledtråd (Låst {m}m {s:02d}s kvar)", disabled=True, use_container_width=True)
+                else:
+                    if st.button("💡 Visa ledtråd", use_container_width=True):
+                        st.session_state.show_hint = True
             
             if st.session_state.show_hint:
                 st.markdown(f"<div class='hint-card'>{stage['hint']}</div>", unsafe_allow_html=True)
@@ -601,6 +562,7 @@ else:
                 st.session_state.current_stage += 1
                 st.session_state.stage_cleared = False
                 st.session_state.show_hint = False
+                st.session_state.stage_start_time = time.time()
                 st.rerun()
                 
         # Display persistent evidence log at bottom
