@@ -263,138 +263,20 @@ def play_audio(sound_type):
         elif sound_type == "victory":
             js = """<script>
             var ctx = new (window.AudioContext || window.webkitAudioContext)();
-            // Metallic jail door clang
-            var oscClang = ctx.createOscillator();
-            var gainClang = ctx.createGain();
-            oscClang.type = 'square';
-            oscClang.frequency.setValueAtTime(140, ctx.currentTime);
-            oscClang.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.45);
-            gainClang.gain.setValueAtTime(0.4, ctx.currentTime);
-            gainClang.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
-            oscClang.connect(gainClang); gainClang.connect(ctx.destination);
-            oscClang.start(ctx.currentTime); oscClang.stop(ctx.currentTime + 0.45);
-
-            // Victory fanfare
             [523.25, 659.25, 783.99, 1046.50].forEach(function(freq, idx) {
                 var osc = ctx.createOscillator();
                 var gain = ctx.createGain();
                 osc.connect(gain); gain.connect(ctx.destination);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(freq, ctx.currentTime + 0.3 + idx*0.18);
-                gain.gain.setValueAtTime(0.25, ctx.currentTime + 0.3 + idx*0.18);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3 + idx*0.18 + 0.5);
-                osc.start(ctx.currentTime + 0.3 + idx*0.18);
-                osc.stop(ctx.currentTime + 0.3 + idx*0.18 + 0.5);
+                osc.type = 'sine'; osc.frequency.setValueAtTime(freq, ctx.currentTime + idx*0.2);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime + idx*0.2);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx*0.2 + 0.5);
+                osc.start(ctx.currentTime + idx*0.2);
+                osc.stop(ctx.currentTime + idx*0.2 + 0.5);
             });
             </script>"""
             components.html(js, height=0, width=0)
 
 # Themes & Stages definition
-
-def get_elice_img_tag():
-    img_b64 = None
-    for fname in ['elice.png', 'elice.jpg', 'Elice.png', 'Elice.jpg', 'elice.jpeg', 'Elice.jpeg']:
-        if os.path.exists(fname):
-            try:
-                with open(fname, 'rb') as f:
-                    img_b64 = base64.b64encode(f.read()).decode()
-                    break
-            except Exception:
-                pass
-    if img_b64:
-        return f'<img src="data:image/png;base64,{img_b64}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />'
-    else:
-        return """<div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #1e293b; color: #94a3b8;">
-            <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <span style="margin-top: 10px; font-size: 14px; color: #cbd5e1; font-weight: bold;">ELICE "SKUGGAN"</span>
-        </div>"""
-
-def render_jail_animation():
-    img_tag = get_elice_img_tag()
-    return f"""
-    <style>
-    @keyframes slideJailBars {{
-        0% {{ transform: translateY(-100%); }}
-        100% {{ transform: translateY(0); }}
-    }}
-    @keyframes stampAnim {{
-        0% {{ transform: scale(2.5) rotate(-12deg); opacity: 0; }}
-        80% {{ transform: scale(0.9) rotate(-12deg); opacity: 1; }}
-        100% {{ transform: scale(1) rotate(-12deg); opacity: 1; }}
-    }}
-    @keyframes redPulse {{
-        0% {{ box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }}
-        50% {{ box-shadow: 0 0 35px rgba(239, 68, 68, 0.9); }}
-        100% {{ box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }}
-    }}
-    .jail-frame {{
-        position: relative;
-        width: 260px;
-        height: 330px;
-        margin: 15px auto;
-        border: 4px solid #ef4444;
-        border-radius: 12px;
-        overflow: hidden;
-        background-color: #0f172a;
-        animation: redPulse 2s infinite ease-in-out;
-    }}
-    .jail-bars-overlay {{
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        display: flex;
-        justify-content: space-around;
-        background: rgba(0, 0, 0, 0.25);
-        animation: slideJailBars 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        z-index: 10;
-    }}
-    .jail-bar {{
-        width: 10px;
-        height: 100%;
-        background: linear-gradient(90deg, #1e293b, #94a3b8, #0f172a);
-        box-shadow: 2px 0 6px rgba(0,0,0,0.8);
-    }}
-    .arrest-stamp {{
-        position: absolute;
-        top: 42%;
-        left: 5%;
-        right: 5%;
-        text-align: center;
-        color: #ef4444;
-        border: 4px solid #ef4444;
-        font-size: 24px;
-        font-weight: 900;
-        padding: 6px 10px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        background: rgba(15, 23, 42, 0.88);
-        animation: stampAnim 0.5s ease-out 1.2s forwards;
-        opacity: 0;
-        z-index: 20;
-        transform-origin: center;
-        border-radius: 6px;
-    }}
-    </style>
-    <div style="text-align: center; margin-top: 10px;">
-        <div class="jail-frame">
-            {img_tag}
-            <div class="jail-bars-overlay">
-                <div class="jail-bar"></div>
-                <div class="jail-bar"></div>
-                <div class="jail-bar"></div>
-                <div class="jail-bar"></div>
-                <div class="jail-bar"></div>
-                <div class="jail-bar"></div>
-            </div>
-            <div class="arrest-stamp">ARRESTERAD</div>
-        </div>
-        <div style="font-size: 24px; font-weight: 800; color: #38bdf8; margin-top: 10px;">
-            ELICE "SKUGGAN"
-        </div>
-        <div style="font-size: 16px; color: #94a3b8; margin-bottom: 15px;">
-            Gärningspersonen är identifierad och omhändertagen!
-        </div>
-    </div>
-    """
-
 THEMES = {
     "sns": {
         "name": "Vem är den skyldige i SNS?",
@@ -402,38 +284,38 @@ THEMES = {
         "disabled": False,
         "stages": [
             {
-                "title": "ETAPP 1: Brottsplatsanalys",
-                "prompt": "Undersök materialet i Kuvert 1. Skriv in koden du får fram:",
+                "title": "ETAPP 1: Brottsplatsen",
+                "prompt": "Undersök brottsplatskartan i Kuvert 1 med hjälp av verktygen i utredningsväskan. Skriv in koden du får fram:",
                 "code": "42",
-                "summary": "Skostorlek 42 bekräftad på brottsplatsen.",
-                "hint": "Ledtråd: Använd verktyget ur utredningsväskan på kartan i Kuvert 1 för att avslöja det dolda spåret. Jämför sedan med de 6 personalakterna.",
-                "success_msg": "KOD GODKÄND!\n\nSpåret är bekräftat. Granska informationen mot de 6 personalakterna i utredningsväskan.\n\n📍 GÅ TILL BOKHYLLAN I KLASSRUMMET OCH HÄMTA KUVERT 2!",
+                "summary": "Fotspår storlek 42 bekräftat på brottsplatsen.",
+                "hint": "Ledtråd: Vissa spår på kartan syns inte i vanligt ljus. Titta i utredningsväskan efter ett verktyg som avslöjar dolda tecken, mät spåret och jämför med tabellen i Bevishandboken.",
+                "success_msg": "KOD GODKÄND!\n\nSpåret är bekräftat. Använd informationen för att granska de 6 personalakterna i er utredningsväska.\n\n📍 GÅ TILL BOKHYLLAN I KLASSRUMMET OCH HÄMTA KUVERT 2!",
                 "next_btn": "FORTSÄTT TILL ETAPP 2 →"
             },
             {
-                "title": "ETAPP 2: Vittnesförhör & Alibin",
-                "prompt": "Studera förhören i Kuvert 2. Skriv in koden du får fram:",
+                "title": "ETAPP 2: Vittnesförhören & Alibin",
+                "prompt": "Studera förhören i Kuvert 2 och jämför med tiderna. Skriv in koden för klockslaget då brottet ägde rum (4 siffror):",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
-                "hint": "Ledtråd: Granska förhörsprotokollen noggrant. Sortera iakttagelserna i tidsordning och identifiera vilket klockslag som saknar bekräftade alibin. Jämför med de 6 personalakterna.",
-                "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Jämför klockslaget med alibin på de 6 personalakterna.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
+                "hint": "Ledtråd: Sortera vittnesmålen i tidsordning och identifiera vilket klockslag som har en lucka utan bekräftade observationer.",
+                "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Jämför klockslaget med alibin på korten i kuvertet.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
                 "next_btn": "FORTSÄTT TILL ETAPP 3 →"
             },
             {
                 "title": "ETAPP 3: Bevisanalys",
                 "prompt": "Granska brevet i Kuvert 3. Skriv in koden du får fram:",
                 "code": "HÖGER",
-                "summary": "Profilbeviset bekräftat: HÖGER.",
-                "hint": "Ledtråd: Spegla rapporten i Kuvert 3 i en spegel eller mot fönstret. Läs den tekniska slutsatsen i texten och jämför med profilerna på de 6 personalakterna.",
-                "success_msg": "KOD GODKÄND!\n\nProfilbeviset är bekräftat. Jämför med de 6 personalakterna för att avskriva oskyldiga.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
+                "summary": "Förövaren bekräftad HÖGERHÄNT.",
+                "hint": "Ledtråd: Granska bläckdraget och lutningen i handstilen. Jämför med guiden i Bevishandboken.",
+                "success_msg": "KOD GODKÄND!\n\nFörövaren är bekräftad HÖGERHÄNT. Granska profilerna på era misstänkta-kort i kuvertet.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
                 "next_btn": "FORTSÄTT TILL ETAPP 4 →"
             },
             {
-                "title": "ETAPP 4: Slutgiltig Identifiering",
-                "prompt": "Använd materialet i Kuvert 4 över loggboken. Skriv in koden du får fram:",
+                "title": "ETAPP 4: Slutgiltigt Chiffer",
+                "prompt": "Använd chiffermallen ur Kuvert 4 över bokstavsarket. Skriv in namnet på den skyldige:",
                 "code": "ELICE",
                 "summary": "Den skyldige identifierad: ELICE.",
-                "hint": "Ledtråd: Passa in mönstermallen ur utredningsväskan exakt över markeringarna på loggboken i Kuvert 4. Läs av bokstäverna som framträder i fönstren.",
+                "hint": "Ledtråd: Lägg hålmallen exakt över hörnmarkeringarna på bokstavsarket. Läs bokstäverna från vänster till höger.",
                 "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE! Utmärkt utredningsarbete!",
                 "next_btn": "AVSLUTA UPPDRAGET"
             }
@@ -558,11 +440,111 @@ else:
     if st.session_state.current_stage >= len(stages):
         play_audio("victory")
         st.balloons()
-        st.markdown("<h1 style='text-align: center; color: #4ade80; margin-bottom: 5px;'>🏆 FALLET LÖST!</h1>", unsafe_allow_html=True)
-        st.markdown("<h3 style='text-align: center; color: #f8fafc; margin-bottom: 20px;'>Utmärkt utredningsarbete! Samtliga koder har knäckts.</h3>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center; color: #4ade80;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Samtliga koder har knäckts.</h3>", unsafe_allow_html=True)
         
-        # Jail Bars Animation & Suspect Card
-        st.markdown(render_jail_animation(), unsafe_allow_html=True)
+        # Check for Elice image file
+        elice_b64 = None
+        for img_name in ['elice.png', 'elice.jpg', 'elice.jpeg', 'Elice.png', 'Elice.jpg', 'elice_skuggan.png']:
+            if os.path.exists(img_name):
+                try:
+                    with open(img_name, 'rb') as f:
+                        elice_b64 = base64.b64encode(f.read()).decode()
+                    break
+                except Exception:
+                    pass
+        
+        if elice_b64:
+            img_content = f'<img src="data:image/png;base64,{elice_b64}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">'
+        else:
+            img_content = """<div style="width:100%; height:100%; background: #1e293b; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:8px;">
+                <div style="font-size: 70px;">👤</div>
+                <div style="color: #94a3b8; font-weight: bold; font-size: 18px; margin-top: 10px;">ELICE "SKUGGAN"</div>
+                <div style="color: #ef4444; font-size: 13px; margin-top: 6px; padding: 0 12px; text-align: center;">Ladda upp <b>elice.png</b> till din GitHub-mapp så visas hennes bild här!</div>
+            </div>"""
+
+        jail_animation_html = f"""
+        <style>
+        @keyframes dropBars {{
+            0% {{ transform: translateY(-100%); }}
+            100% {{ transform: translateY(0); }}
+        }}
+        @keyframes stampIn {{
+            0% {{ transform: scale(3) rotate(-15deg); opacity: 0; }}
+            80% {{ transform: scale(0.9) rotate(-15deg); opacity: 1; }}
+            100% {{ transform: scale(1) rotate(-15deg); opacity: 1; }}
+        }}
+        .jail-card {{
+            background-color: #1e293b;
+            border: 3px solid #ef4444;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 380px;
+            margin: 25px auto;
+            text-align: center;
+        }}
+        .jail-frame {{
+            position: relative;
+            width: 280px;
+            height: 350px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 4px solid #334155;
+            background-color: #0f172a;
+        }}
+        .jail-bars {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #0f172a 0px,
+                #0f172a 14px,
+                #475569 14px,
+                #94a3b8 18px,
+                #1e293b 22px,
+                transparent 22px,
+                transparent 48px
+            );
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+            animation: dropBars 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            z-index: 2;
+        }}
+        .jail-stamp {{
+            position: absolute;
+            top: 40%;
+            left: 5%;
+            width: 90%;
+            border: 4px solid #ef4444;
+            color: #ef4444;
+            font-size: 26px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 8px 0;
+            letter-spacing: 2px;
+            background: rgba(15, 23, 42, 0.9);
+            transform: rotate(-15deg);
+            animation: stampIn 0.6s ease-out 0.9s forwards;
+            opacity: 0;
+            z-index: 3;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+        }}
+        </style>
+        <div class="jail-card">
+            <div style="font-size: 22px; font-weight: 800; color: #f8fafc; margin-bottom: 12px; letter-spacing: 1px;">🔒 ARRESTERAD: ELICE "SKUGGAN"</div>
+            <div class="jail-frame">
+                {img_content}
+                <div class="jail-bars"></div>
+                <div class="jail-stamp">LÅS OCH BOM</div>
+            </div>
+            <div style="color: #cbd5e1; font-size: 15px; margin-top: 14px; font-weight: 600;">PEKADES UT AV HÅLMALLEN I LOGGBOKEN</div>
+        </div>
+        """
+        st.markdown(jail_animation_html, unsafe_allow_html=True)
         
         # Final summary log
         if st.session_state.solved_log:
