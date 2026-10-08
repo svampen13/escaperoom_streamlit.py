@@ -293,7 +293,7 @@ THEMES = {
                 "next_btn": "FORTSÄTT TILL ETAPP 2 →"
             },
             {
-                "title": "ETAPP 2: Vittnesförhören & Alibin",
+                "title": "ETAPP 2: Vittnesförhören",
                 "prompt": "Studera förhören i Kuvert 2. Skriv in koden du får fram:",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
@@ -442,32 +442,26 @@ else:
         st.balloons()
         st.markdown("<h1 style='text-align: center; color: #4ade80;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
         st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Samtliga koder har knäckts.</h3>", unsafe_allow_html=True)
-
         
-        # Display Elice Image and Jail Overlay
+        # Display Elice's image safely without TypeError risk
         elice_file = None
-        for f_name in ["elice.png", "elice.jpg", "elice.jpeg", "Elice.png", "Elice.jpg"]:
-            if os.path.exists(f_name):
-                elice_file = f_name
-                break
-
-        col_a, col_b, col_c = st.columns([1, 1.2, 1])
-        with col_b:
-            if elice_file:
-                st.image(elice_file, caption="ARRESTERAD: ELICE SKUGGAN", use_container_width=True)
-            else:
-                st.info("📷 Ladda upp elice.png till din GitHub-mapp för att visa Elices porträtt här!")
+        try:
+            for f in os.listdir("."):
+                if "elice" in f.lower() and f.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+                    elice_file = f
+                    break
+        except Exception:
+            pass
             
-            st.markdown("""
-            <div style="background-color:#991b1b; color:#ffffff; padding:10px; border-radius:8px; text-align:center; font-weight:bold; font-size:22px; border:2px solid #ef4444; margin-top:10px;">
-                🔒 LÅS OCH BOM — FALLET AVSLUTAT
-            </div>
-            """, unsafe_allow_html=True)
-
-            
+        st.markdown("<div style='text-align: center; margin-top: 15px; margin-bottom: 15px;'><span style='background-color: #ef4444; color: #ffffff; padding: 8px 20px; border-radius: 6px; font-weight: bold; font-size: 20px;'>ARRESTERAD: ELICE &quot;SKUGGAN&quot;</span></div>", unsafe_allow_html=True)
         
-            
-
+        if elice_file:
+            col_a, col_b, col_c = st.columns([1, 2, 1])
+            with col_b:
+                try:
+                    st.image(elice_file)
+                except Exception as img_err:
+                    st.warning(f"Kunde inte visa bilden ({elice_file}): {img_err}")
         
         # Final summary log
         if st.session_state.solved_log:
