@@ -292,16 +292,16 @@ THEMES = {
             },
             {
                 "title": "ETAPP 2: Vittnesförhören & Alibin",
-                "prompt": "Studera förhören i Kuvert 2. Räkna antalet stavfel i de fyra avsnitten för att få fram klockslaget (4 siffror):",
+                "prompt": "Studera förhören i Kuvert 2 och räkna antalet fel. Skriv in koden för klockslaget då brottet ägde rum (4 siffror):",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
-                "hint": "Ledtråd: Räkna antalet stavfel i avsnitt 1, 2, 3 och 4 i ordning. De fyra siffrorna bildar klockslaget (HHMM) då brottet ägde rum.",
+                "hint": "Ledtråd: Räkna stavfelen i förhörsprotokollets fyra avsnitt (1 fel, 5 fel, 0 fel, 0 fel = 1500, dvs kl. 15:00). Jämför alibin på de kvarvarande personalkorten.",
                 "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Jämför klockslaget med alibin på personalkorten.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
                 "next_btn": "FORTSÄTT TILL ETAPP 3 →"
             },
             {
                 "title": "ETAPP 3: Handstil & Dominans",
-                "prompt": "Granska kriminolograpporten i Kuvert 3 med hjälp av noggranna 'glas-ögon'. Skriv om förövaren är HÖGER eller VÄNSTERhänt:",
+                "prompt": "Granska dokumentet i Kuvert 3. När ni undersöker det på rätt sätt kommer koden att framträda. Mata in koden här:",
                 "code": "HÖGER",
                 "summary": "Förövaren bekräftad HÖGERHÄNT.",
                 "hint": "Ledtråd: Spegla rapporten i Kuvert 3 i en spegel eller mot fönstret. Läs den tekniska slutsatsen angående förövarens handstil.",
