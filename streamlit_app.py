@@ -171,6 +171,36 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Helper function to reliably display Elice arrest image
+def display_elice_arrest_image():
+    b64_str = ""
+    candidate_paths = [
+        "elice_animation_preview.png",
+        "/workspace/artifacts/elice_animation_preview.png",
+        "/workspace/out/elice_animation_preview.png",
+        os.path.join(os.path.dirname(__file__), "elice_animation_preview.png")
+    ]
+    for p in candidate_paths:
+        if os.path.exists(p):
+            try:
+                with open(p, "rb") as f:
+                    b64_str = base64.b64encode(f.read()).decode("utf-8")
+                if b64_str:
+                    break
+            except Exception:
+                pass
+
+    if b64_str:
+        html_code = f"""
+        <div style="text-align: center; margin: 25px 0;">
+            <img src="data:image/png;base64,{b64_str}" style="max-width: 650px; width: 100%; border-radius: 12px; border: 4px solid #ef4444; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);">
+            <p style="color: #cbd5e1; font-size: 22px; font-weight: 800; margin-top: 14px; letter-spacing: 1px;">ELICE "SKUGGAN" — ARRESTERAD</p>
+        </div>
+        """
+        st.markdown(html_code, unsafe_allow_html=True)
+    else:
+        st.error("Bildfilen elice_animation_preview.png hittades inte.")
+
 # Background music helper function
 def play_background_music(file_path="bakgrundsmusik.mp3"):
     if st.session_state.get("enable_audio", True):
@@ -286,34 +316,34 @@ THEMES = {
                 "prompt": "Undersök brottsplatskartan i Kuvert 1 med hjälp av verktygen i utredningsväskan. Skriv in koden du får fram:",
                 "code": "42",
                 "summary": "Fotspår storlek 42 bekräftat på brottsplatsen.",
-                "hint": "Ledtråd: Använd UV-lampan ur utredningsväskan på fotspåret i Kuvert 1 för att avläsa den dolda skostorleken. Jämför med de 6 personalkorten.",
-                "success_msg": "KOD GODKÄND!\n\nSpåret är bekräftat (skostorlek 42). Använd informationen för att granska de 6 personalkorten i er utredningsväska.\n\n📍 GÅ TILL BOKHYLLAN I KLASSRUMMET OCH HÄMTA KUVERT 2!",
+                "hint": "Ledtråd: Använd UV-lampan ur utredningsväskan på fotspåret i Kuvert 1 för att avläsa den dolda skostorleken. Jämför med de 7 personalkorten.",
+                "success_msg": "KOD GODKÄND!\n\nSpåret är bekräftat (skostorlek 42). Använd informationen för att granska de 7 personalkorten i er utredningsväska.\n\n📍 GÅ TILL BOKHYLLAN I KLASSRUMMET OCH HÄMTA KUVERT 2!",
                 "next_btn": "FORTSÄTT TILL ETAPP 2 →"
             },
             {
                 "title": "ETAPP 2: Vittnesförhören & Alibin",
-                "prompt": "Studera förhören i Kuvert 2 och räkna antalet fel. Skriv in koden för klockslaget då brottet ägde rum (4 siffror):",
+                "prompt": "Studera förhören i Kuvert 2. Räkna antalet stavfel i de fyra avsnitten för att få fram klockslaget (4 siffror):",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
-                "hint": "Ledtråd: Räkna stavfelen i förhörsprotokollets fyra avsnitt (1 fel, 5 fel, 0 fel, 0 fel = 1500, dvs kl. 15:00). Jämför alibin på de kvarvarande personalkorten.",
+                "hint": "Ledtråd: Räkna antalet stavfel i avsnitt 1, 2, 3 och 4 i ordning. De fyra siffrorna bildar klockslaget (HHMM) då brottet ägde rum.",
                 "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Jämför klockslaget med alibin på personalkorten.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
                 "next_btn": "FORTSÄTT TILL ETAPP 3 →"
             },
             {
-                "title": "ETAPP 3: Handstil & Dominans",
-                "prompt": "Granska kriminolograpporten i Kuvert 3 med hjälp av noggranna 'glas-ögon'. Skriv om förövaren är HÖGER eller VÄNSTERhänt:",
+                "title": "ETAPP 3: Bevisanalys",
+                "prompt": "Granska dokumentet i Kuvert 3. När ni undersöker det på rätt sätt kommer koden att framträda. Mata in koden här:",
                 "code": "HÖGER",
-                "summary": "Förövaren bekräftad HÖGERHÄNT.",
-                "hint": "Ledtråd: Spegla rapporten i Kuvert 3 i en spegel eller mot fönstret. Läs den tekniska slutsatsen angående förövarens handstil.",
-                "success_msg": "KOD GODKÄND!\n\nFörövaren är bekräftad HÖGERHÄNT. Eliminera vänsterhänta personer från era personalkort.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
+                "summary": "Slutsats i rapporten bekräftad: HÖGER.",
+                "hint": "Ledtråd: Undersök dokumentet i Kuvert 3 mot ett fönster eller med en spegel för att avläsa den dolda slutsatsen.",
+                "success_msg": "KOD GODKÄND!\n\nSlutsatsen i rapporten är bekräftad. Använd informationen för att granska personalkorten.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
                 "next_btn": "FORTSÄTT TILL ETAPP 4 →"
             },
             {
                 "title": "ETAPP 4: Slutgiltigt Chiffer & Utpekande",
-                "prompt": "Använd chiffermallen ur utredningsväskan över loggboken i Kuvert 4 (inriktad mot HÖGER). Skriv in namnet på den skyldige:",
+                "prompt": "Använd chiffermallen ur utredningsväskan över loggboken i Kuvert 4. Skriv in namnet på den skyldige:",
                 "code": "ELICE",
                 "summary": "Den skyldige identifierad: ELICE.",
-                "hint": "Ledtråd: Lägg hålmallens stjärnmärkta hörn (HÖGER) mot loggbokens övre högra hörn. Läs bokstäverna i fönstren i ordningsföljd.",
+                "hint": "Ledtråd: Passa in hålmallen över loggbokens hörn och läs av bokstäverna i fönstren i ordningsföljd.",
                 "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE! Utmärkt utredningsarbete!",
                 "next_btn": "AVSLUTA UPPDRAGET"
             }
@@ -438,19 +468,11 @@ else:
     if st.session_state.current_stage >= len(stages):
         play_audio("victory")
         st.balloons()
-        st.markdown("<h1 style='text-align: center; color: #4ade80; font-weight: 800;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
-        st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Den skyldige har blivit identifierad och gripen.</h3>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center; color: #4ade80; font-size: 44px; font-weight: 800;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color: #f8fafc; font-size: 24px;'>Utmärkt utredningsarbete! Den skyldige har blivit identifierad och gripen.</h3>", unsafe_allow_html=True)
         
-        # Display Elice behind bars picture
-        col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
-        with col_img2:
-            img_file = None
-            for p in ["elice_animation_preview.png", "/workspace/artifacts/elice_animation_preview.png", os.path.join(os.path.dirname(__file__), "elice_animation_preview.png")]:
-                if os.path.exists(p):
-                    img_file = p
-                    break
-            if img_file:
-                st.image(img_file, caption="ELICE 'SKUGGAN' — ARRESTERAD", use_column_width=True)
+        # Display Elice arrest image
+        display_elice_arrest_image()
         
         # Final summary log
         if st.session_state.solved_log:
@@ -479,14 +501,12 @@ else:
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("LÅS UPP", type="primary", use_container_width=True):
-                    # Flexible check for stage code
                     user_val = code_input.upper()
                     target_val = stage["code"].upper()
                     if user_val == target_val or (target_val == "ELICE" and user_val in ["ELICE", "ELICE SVENSSON"]):
                         st.session_state.stage_cleared = True
                         st.session_state.show_hint = False
                         
-                        # Add to solved log
                         log_entry = f"Etapp {st.session_state.current_stage + 1}: Kod {stage['code']} ({stage['summary']})"
                         if log_entry not in st.session_state.solved_log:
                             st.session_state.solved_log.append(log_entry)
