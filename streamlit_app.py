@@ -301,7 +301,7 @@ THEMES = {
             },
             {
                 "title": "ETAPP 3: Handstil & Dominans",
-                "prompt": "Granska dokumentet i Kuvert 3. När ni undersöker det på rätt sätt kommer koden att framträda. Mata in koden här:",
+                "prompt": "Granska kriminolograpporten i Kuvert 3 med hjälp av noggranna 'glas-ögon'. Skriv om förövaren är HÖGER eller VÄNSTERhänt:",
                 "code": "HÖGER",
                 "summary": "Förövaren bekräftad HÖGERHÄNT.",
                 "hint": "Ledtråd: Spegla rapporten i Kuvert 3 i en spegel eller mot fönstret. Läs den tekniska slutsatsen angående förövarens handstil.",
@@ -438,8 +438,19 @@ else:
     if st.session_state.current_stage >= len(stages):
         play_audio("victory")
         st.balloons()
-        st.markdown("<h1 style='text-align: center; color: #4ade80;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
-        st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Samtliga koder har knäckts.</h3>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center; color: #4ade80; font-weight: 800;'>FALLET LÖST!</h1>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color: #f8fafc;'>Utmärkt utredningsarbete! Den skyldige har blivit identifierad och gripen.</h3>", unsafe_allow_html=True)
+        
+        # Display Elice behind bars picture
+        col_img1, col_img2, col_img3 = st.columns([1, 2, 1])
+        with col_img2:
+            img_file = None
+            for p in ["elice_animation_preview.png", "/workspace/artifacts/elice_animation_preview.png", os.path.join(os.path.dirname(__file__), "elice_animation_preview.png")]:
+                if os.path.exists(p):
+                    img_file = p
+                    break
+            if img_file:
+                st.image(img_file, caption="ELICE 'SKUGGAN' — ARRESTERAD", use_column_width=True)
         
         # Final summary log
         if st.session_state.solved_log:
