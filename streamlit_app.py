@@ -540,3 +540,39 @@ else:
                         is_correct = True
                     elif stage["code"] == "HÖGER" and val in ["höger", "hoger", "högerhänt", "hogerhant"]:
                         is_correct = True
+                        
+                    if is_correct:
+                        st.session_state.stage_cleared = True
+                        st.session_state.show_hint = False
+                        play_audio("correct")
+                        if stage.get("summary") and stage["summary"] not in st.session_state.solved_log:
+                            st.session_state.solved_log.append(stage["summary"])
+                        st.rerun()
+                    else:
+                        play_audio("wrong")
+                        st.error("❌ Felaktig kod. Försök igen eller använd ledtråden.")
+                        
+            with c2:
+                elapsed_stage = time.time() - st.session_state.stage_start_time
+                lock_seconds = st.session_state.hint_lock_minutes * 60
+                
+                if elapsed_stage < lock_seconds:
+                    rem_lock = int(lock_seconds - elapsed_stage)
+                    mins_rem, secs_rem = divmod(rem_lock, 60)
+                    st.button(f"🔒 Ledtråd låst ({mins_rem:02d}:{secs_rem:02d})", disabled=True, use_container_width=True)
+                else:
+                    if st.button("💡 Visa ledtråd", use_container_width=True):
+                        st.session_state.show_hint = True
+                        
+            if st.session_state.show_hint:
+                st.markdown(f"<div class='hint-card'>{stage['hint']}</div>", unsafe_allow_html=True)
+                
+        else:
+            st.markdown(f"<div class='success-card'>{stage['success_msg']}</div>", unsafe_allow_html=True)
+            st.write("")
+            if st.button(f"{stage['next_btn']}", type="primary", use_container_width=True):
+                st.session_state.current_stage += 1
+                st.session_state.stage_cleared = False
+                st.session_state.show_hint = False
+                st.session_state.stage_start_time = time.time()
+                st.rerun()
