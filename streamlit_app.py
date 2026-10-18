@@ -4,7 +4,7 @@ import time
 import base64
 import os
 
-# Page configuration - Clean without emojis in title
+# Page configuration - Clean without emojis in title or page_icon
 st.set_page_config(
     page_title="Escape Room Hub",
     layout="centered",
@@ -164,20 +164,21 @@ st.markdown("""
         color: #cbd5e1;
         margin-bottom: 6px;
     }
-    
+
+    /* Jail Bars and Stamp Animations */
     @keyframes dropBars {
         0% { transform: translateY(-100%); opacity: 0; }
         100% { transform: translateY(0); opacity: 1; }
     }
     @keyframes stampSlam {
-        0% { transform: scale(3) rotate(-10deg); opacity: 0; }
-        70% { transform: scale(0.9) rotate(-3deg); opacity: 1; }
-        100% { transform: scale(1) rotate(-5deg); opacity: 0.95; }
+        0% { transform: scale(3) rotate(-12deg); opacity: 0; }
+        70% { transform: scale(0.9) rotate(-12deg); opacity: 1; }
+        100% { transform: scale(1) rotate(-12deg); opacity: 1; }
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Background music helper function
+# Background music helper function using native st.sidebar.audio for zero memory overhead
 def play_background_music(file_path="bakgrundsmusik.mp3"):
     if st.session_state.get("enable_audio", True) and os.path.exists(file_path):
         try:
@@ -271,28 +272,17 @@ def play_audio(sound_type):
             </script>"""
             components.html(js, height=0, width=0)
 
-# Function to render Elice arrest image with thin, realistic 3D jail bars overlay
+# Function to render Elice arrest image cleanly with thin 3D steel bars overlay
 def render_elice_arrest_card():
     img_src = ""
-    for fn in ["elice_animation_preview.png", "elice.png", "Elice Escape.png"]:
+    for fn in ["elice_animation_preview.png", "Elice Escape.png", "elice.png"]:
         if os.path.exists(fn):
             try:
-                with open(fn, 'rb') as f:
-                    img_src = "data:image/png;base64," + base64.b64encode(f.read()).decode()
+                with open(fn, "rb") as f:
+                    img_src = f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
                 break
             except Exception:
                 pass
-                
-    if not img_src:
-        if os.path.exists('.'):
-            for fn in os.listdir('.'):
-                if fn.lower().startswith('elice') and fn.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
-                    try:
-                        with open(fn, 'rb') as f:
-                            img_src = "data:image/png;base64," + base64.b64encode(f.read()).decode()
-                        break
-                    except Exception:
-                        pass
 
     if img_src:
         jail_html = f"""
@@ -300,27 +290,28 @@ def render_elice_arrest_card():
             <div style="position:relative; width:100%; max-width:480px; border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.8); border:3px solid #334155; background:#0f172a;">
                 <img src="{img_src}" style="width:100%; display:block; filter: contrast(1.1) brightness(0.95);" alt="Elice">
                 
-                <!-- Thin 3D Steel Jail Bars Overlay -->
+                <!-- Falling Thin 3D Steel Bars Overlay -->
                 <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; justify-content:space-around; pointer-events:none; z-index:10; animation: dropBars 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
-                    <div style="width:10px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 40%, #0f172a 100%); box-shadow: 2px 0 6px rgba(0,0,0,0.8);"></div>
-                    <div style="width:10px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 40%, #0f172a 100%); box-shadow: 2px 0 6px rgba(0,0,0,0.8);"></div>
-                    <div style="width:10px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 40%, #0f172a 100%); box-shadow: 2px 0 6px rgba(0,0,0,0.8);"></div>
-                    <div style="width:10px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 40%, #0f172a 100%); box-shadow: 2px 0 6px rgba(0,0,0,0.8);"></div>
-                    <div style="width:10px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 40%, #0f172a 100%); box-shadow: 2px 0 6px rgba(0,0,0,0.8);"></div>
-                    <!-- Horizontal Steel Beam -->
-                    <div style="position:absolute; top:35%; left:0; width:100%; height:12px; background:linear-gradient(180deg, #1e293b 0%, #cbd5e1 50%, #0f172a 100%); box-shadow: 0 3px 6px rgba(0,0,0,0.8);"></div>
-                    <div style="position:absolute; top:68%; left:0; width:100%; height:12px; background:linear-gradient(180deg, #1e293b 0%, #cbd5e1 50%, #0f172a 100%); box-shadow: 0 3px 6px rgba(0,0,0,0.8);"></div>
+                    <div style="width:10px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); height:100%;"></div>
+                    <div style="width:10px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); height:100%;"></div>
+                    <div style="width:10px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); height:100%;"></div>
+                    <div style="width:10px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); height:100%;"></div>
+                    <div style="width:10px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); height:100%;"></div>
                 </div>
 
-                <!-- ARRESTERAD Red Stamp Overlay -->
-                <div style="position:absolute; top:42%; left:5%; width:90%; padding: 10px 5px; background: rgba(185, 28, 28, 0.9); border: 4px solid #ef4444; border-radius: 8px; color: #ffffff; font-weight: 900; font-size: 22px; text-align: center; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); z-index:20; animation: stampSlam 0.5s ease-out 0.6s both; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);">
-                    ARRESTERAD — ELICE
+                <!-- Red Stamp Overlay -->
+                <div style="position:absolute; top:40%; left:5%; right:5%; transform:translateY(-50%) rotate(-12deg); background:rgba(220, 38, 38, 0.9); color:white; border:4px solid #f87171; text-align:center; padding:12px 10px; font-weight:900; font-size:22px; letter-spacing:2px; text-shadow:2px 2px 4px rgba(0,0,0,0.8); box-shadow:0 0 20px rgba(220,38,38,0.6); z-index:20; animation: stampSlam 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.6s forwards; opacity:0;">
+                    ARRESTERAD — ELICE<br>LÅST INOM LÅS OCH BOM
                 </div>
             </div>
         </div>
         """
-        components.html(jail_html, height=480)
+        components.html(jail_html, height=520)
     else:
+        for fn in os.listdir('.'):
+            if fn.lower().startswith('elice') and fn.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+                st.image(fn, caption="ARRESTERAD — ELICE 'SKUGGAN'", use_container_width=True)
+                return
         st.warning("Lägg bilden elice_animation_preview.png i ditt GitHub-arkiv för att visa fotot på Elice här!")
 
 # Themes & Stages Definition
@@ -408,7 +399,7 @@ if "solved_log" not in st.session_state:
 
 # Sidebar controls
 st.sidebar.title("Inställningar")
-if st.sidebar.button("Nollställ / Huvudmeny"):
+if st.sidebar.button("Nollställ / Huvudmeny", use_container_width=True):
     st.session_state.game_started = False
     st.session_state.current_stage = 0
     st.session_state.stage_cleared = False
@@ -519,3 +510,33 @@ else:
                 st.markdown(f"<div class='log-item'>✓ {item}</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
             
+        st.write("")
+        if st.button("Tillbaka till huvudmenyn", use_container_width=True):
+            st.session_state.game_started = False
+            st.session_state.current_stage = 0
+            st.session_state.stage_cleared = False
+            st.rerun()
+            
+    else:
+        stage = stages[st.session_state.current_stage]
+        
+        st.markdown(f"<h2 style='color:#38bdf8;'>{stage['title']}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<p style='font-size:20px; color:#e2e8f0;'>{stage['prompt']}</p>", unsafe_allow_html=True)
+        
+        if not st.session_state.stage_cleared:
+            user_input = st.text_input("SKRIV IN KOD HÄR:", key=f"stage_in_{st.session_state.current_stage}", placeholder="KOD").strip()
+            
+            c1, c2 = st.columns(2)
+            with c1:
+                if st.button("LÅS UPP", type="primary", use_container_width=True):
+                    val = user_input.lower()
+                    target = stage["code"].lower()
+                    
+                    # Flexible answer matching
+                    is_correct = (val == target)
+                    if stage["code"] == "1500" and val in ["15:00", "15.00", "kl 15:00", "kl. 15:00", "1500"]:
+                        is_correct = True
+                    elif stage["code"] == "ELICE" and val in ["elice", "elise", "elice svensson", "elise svensson"]:
+                        is_correct = True
+                    elif stage["code"] == "HÖGER" and val in ["höger", "hoger", "högerhänt", "hogerhant"]:
+                        is_correct = True
