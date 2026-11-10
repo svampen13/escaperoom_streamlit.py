@@ -373,7 +373,7 @@ THEMES = {
             },
             {
                 "title": "ETAPP 3: Handstil & Dominans",
-                "prompt": "Granska brevet i Kuvert 3. Skriv om förövaren är HÖGER eller VÄNSTERhänt:",
+                "prompt": "Granska den tekniska bevisanalysen i Kuvert 3. När ni undersöker rapporten framträder laboratorieslutsatsen.\n\nMata in koden du får fram:",
                 "code": "HÖGER",
                 "summary": "Förövaren bekräftad HÖGERHÄNT.",
                 "hint": "Undersök dokumentet i Kuvert 3 mot ett fönster eller med en spegel för att avläsa den dolda slutsatsen.",
