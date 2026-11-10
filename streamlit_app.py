@@ -276,42 +276,46 @@ ELICE_IMAGE_B64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHB
 # Function to render Elice arrest image cleanly with animated 3D Jail Bars overlay
 def render_elice_arrest_card():
     img_src = ""
-    if ELICE_IMAGE_B64:
+    # Try local file first if available, then fallback to embedded Base64
+    for fn in ["elice_animation_preview.png", "elice.png", "elice.jpg", "elice.jpeg"]:
+        if os.path.exists(fn):
+            try:
+                with open(fn, "rb") as f:
+                    mime = "image/png" if fn.endswith(".png") else "image/jpeg"
+                    img_src = f"data:{mime};base64,{base64.b64encode(f.read()).decode()}"
+                break
+            except Exception:
+                pass
+                
+    if not img_src and ELICE_IMAGE_B64:
         img_src = f"data:image/jpeg;base64,{ELICE_IMAGE_B64}"
-    elif os.path.exists('.'):
-        for fn in os.listdir('.'):
-            if fn.lower().startswith('elice') and fn.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
-                try:
-                    with open(fn, 'rb') as f:
-                        img_src = f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
-                    break
-                except Exception:
-                    pass
 
     if img_src:
         jail_html = f"""
-        <div style="display:flex; justify-content:center; align-items:center; margin: 20px 0;">
-            <div style="position:relative; width:100%; max-width:480px; border-radius:12px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.8); border:3px solid #334155; background:#0f172a;">
-                <img src="{img_src}" style="width:100%; display:block; filter: contrast(1.1) brightness(0.95);" alt="Elice">
+        <div style="display:flex; justify-content:center; align-items:center; margin: 15px 0;">
+            <div style="position:relative; width:100%; max-width:480px; border-radius:12px; overflow:hidden; box-shadow:0 12px 35px rgba(0,0,0,0.85); border:3px solid #334155; background:#0f172a;">
                 
-                <!-- Falling 3D Steel Bars Overlay -->
-                <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; justify-space-around; pointer-events:none; z-index:10; animation: dropBars 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
-                    <div style="flex:1; margin:0 6px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); border-radius:3px;"></div>
-                    <div style="flex:1; margin:0 6px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); border-radius:3px;"></div>
-                    <div style="flex:1; margin:0 6px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); border-radius:3px;"></div>
-                    <div style="flex:1; margin:0 6px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); border-radius:3px;"></div>
-                    <div style="flex:1; margin:0 6px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); border-radius:3px;"></div>
-                    <div style="flex:1; margin:0 6px; background:linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%); box-shadow: 2px 0 8px rgba(0,0,0,0.7); border-radius:3px;"></div>
+                <!-- Elice Photo -->
+                <img src="{img_src}" style="width:100%; display:block; filter: contrast(1.1) brightness(0.95);" alt="Elice Arresterad">
+                
+                <!-- 3D Steel Jail Bars Overlay (6 vertical bars evenly spaced) -->
+                <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; justify-content:space-evenly; align-items:stretch; pointer-events:none; z-index:10; animation: dropBars 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; -webkit-animation: dropBars 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;">
+                    <div style="width:14px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 45%, #ffffff 55%, #334155 80%, #0f172a 100%); box-shadow:3px 0 8px rgba(0,0,0,0.8); border-radius:2px;"></div>
+                    <div style="width:14px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 45%, #ffffff 55%, #334155 80%, #0f172a 100%); box-shadow:3px 0 8px rgba(0,0,0,0.8); border-radius:2px;"></div>
+                    <div style="width:14px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 45%, #ffffff 55%, #334155 80%, #0f172a 100%); box-shadow:3px 0 8px rgba(0,0,0,0.8); border-radius:2px;"></div>
+                    <div style="width:14px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 45%, #ffffff 55%, #334155 80%, #0f172a 100%); box-shadow:3px 0 8px rgba(0,0,0,0.8); border-radius:2px;"></div>
+                    <div style="width:14px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 45%, #ffffff 55%, #334155 80%, #0f172a 100%); box-shadow:3px 0 8px rgba(0,0,0,0.8); border-radius:2px;"></div>
+                    <div style="width:14px; background:linear-gradient(90deg, #1e293b 0%, #cbd5e1 45%, #ffffff 55%, #334155 80%, #0f172a 100%); box-shadow:3px 0 8px rgba(0,0,0,0.8); border-radius:2px;"></div>
                 </div>
                 
-                <!-- Horizontal Lock Bars -->
-                <div style="position:absolute; top:25%; left:0; width:100%; height:14px; background:linear-gradient(180deg, #475569 0%, #94a3b8 50%, #1e293b 100%); box-shadow:0 3px 6px rgba(0,0,0,0.6); z-index:11;"></div>
-                <div style="position:absolute; top:70%; left:0; width:100%; height:14px; background:linear-gradient(180deg, #475569 0%, #94a3b8 50%, #1e293b 100%); box-shadow:0 3px 6px rgba(0,0,0,0.6); z-index:11;"></div>
+                <!-- Horizontal Steel Lock Beams -->
+                <div style="position:absolute; top:22%; left:0; width:100%; height:16px; background:linear-gradient(180deg, #1e293b 0%, #94a3b8 40%, #ffffff 50%, #475569 80%, #0f172a 100%); box-shadow:0 4px 8px rgba(0,0,0,0.7); z-index:11;"></div>
+                <div style="position:absolute; top:72%; left:0; width:100%; height:16px; background:linear-gradient(180deg, #1e293b 0%, #94a3b8 40%, #ffffff 50%, #475569 80%, #0f172a 100%); box-shadow:0 4px 8px rgba(0,0,0,0.7); z-index:11;"></div>
 
-                <!-- Red Slam Stamp -->
-                <div style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); width:90%; background:rgba(185, 28, 28, 0.92); border:3px solid #ef4444; border-radius:8px; padding:10px 5px; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.9); z-index:12; animation: stampSlam 0.5s ease-out 0.6s both;">
-                    <div style="color:#ffffff; font-weight:900; font-size:22px; letter-spacing:2px; text-transform:uppercase; font-family:sans-serif;">ARRESTERAD</div>
-                    <div style="color:#fecaca; font-weight:700; font-size:13px; letter-spacing:1px; margin-top:2px; font-family:sans-serif;">ELICE 'SKUGGAN' — LÅST INOM LÅS OCH BOM</div>
+                <!-- Red Slam Arrested Stamp -->
+                <div style="position:absolute; bottom:18px; left:50%; transform:translateX(-50%); width:88%; background:rgba(185, 28, 28, 0.94); border:3px solid #ef4444; border-radius:8px; padding:10px 5px; text-align:center; box-shadow:0 8px 25px rgba(0,0,0,0.9); z-index:12; animation: stampSlam 0.5s ease-out 0.6s both; -webkit-animation: stampSlam 0.5s ease-out 0.6s both;">
+                    <div style="color:#ffffff; font-weight:900; font-size:24px; letter-spacing:3px; text-transform:uppercase; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">ARRESTERAD</div>
+                    <div style="color:#fecaca; font-weight:700; font-size:13px; letter-spacing:1px; margin-top:2px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">ELICE — LÅST INOM LÅS OCH BOM</div>
                 </div>
             </div>
         </div>
@@ -321,9 +325,17 @@ def render_elice_arrest_card():
             0% {{ transform: translateY(-100%); }}
             100% {{ transform: translateY(0); }}
         }}
+        @-webkit-keyframes dropBars {{
+            0% {{ -webkit-transform: translateY(-100%); }}
+            100% {{ -webkit-transform: translateY(0); }}
+        }}
         @keyframes stampSlam {{
             0% {{ transform: translate(-50%, -100px) scale(2); opacity: 0; }}
             100% {{ transform: translate(-50%, 0) scale(1); opacity: 1; }}
+        }}
+        @-webkit-keyframes stampSlam {{
+            0% {{ -webkit-transform: translate(-50%, -100px) scale(2); opacity: 0; }}
+            100% {{ -webkit-transform: translate(-50%, 0) scale(1); opacity: 1; }}
         }}
         </style>
         
@@ -334,17 +346,18 @@ def render_elice_arrest_card():
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'square'; osc.frequency.setValueAtTime(120, now);
-            osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
+            osc.type = 'square'; osc.frequency.setValueAtTime(140, now);
+            osc.frequency.exponentialRampToValueAtTime(35, now + 0.28);
             gain.gain.setValueAtTime(0.4, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-            osc.start(now); osc.stop(now + 0.25);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+            osc.start(now); osc.stop(now + 0.28);
         }} catch(e) {{}}
         </script>
         """
-        components.html(jail_html, height=520)
+        components.html(jail_html, height=540)
     else:
         st.warning("Lägg bilden elice_animation_preview.png i ditt GitHub-arkiv för att visa fotot på Elice här!")
+
 
 # Themes & Stages Definition
 THEMES = {
