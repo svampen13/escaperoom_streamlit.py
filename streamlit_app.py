@@ -583,7 +583,7 @@ else:
                         is_correct = True
                     elif target_val == "1500" and any(v in user_val for v in ["1500", "15:00", "15.00", "KL 15:00", "KL. 15:00", "15 00", "15"]):
                         is_correct = True
-                    elif target_val == "HÖGER" and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT"]):
+                    elif target_val == "HÖGER" and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT", "HÖGER HAND", "HÖGERHAND"]):
                         is_correct = True
                     elif target_val == "ELICE" and any(v in user_val for v in ["ELICE", "ELISE", "ELICE SVENSSON", "SVENSSON"]):
                         is_correct = True
