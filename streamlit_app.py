@@ -368,7 +368,7 @@ THEMES = {
         "stages": [
             {
                 "title": "ETAPP 1: Det dolda spåret",
-                "prompt": "Kartan i Kuvert 1 döljer en hemlighet. Använd utredningsverktygen för att avslöja vart spåret leder i klassrummet.\n\nJämför fyndet du hittar på platsen med tabellen i kuvertet för att få fram rätt tal:",
+                "prompt": "Kartan i Kuvert 1 döljer en hemlighet. Använd utredningsverktygen för att avslöja var ledtråden är gömd.\n\nJämför fyndet du hittar på platsen med tabellen i kuvertet för att få fram rätt tal:",
                 "code": "42",
                 "summary": "Skostorlek 42 bekräftad.",
                 "hint": "Använd UV-lampan ur utredningsväskan på brottsplatskartan i Kuvert 1 för att hitta den utpekade platsen i klassrummet. Jämför fyndet med skostorlekstabellen.",
@@ -386,7 +386,7 @@ THEMES = {
             },
             {
                 "title": "ETAPP 3: Handstil & Dominans",
-                "prompt": "Granska den tekniska bevisanalysen i Kuvert 3. När ni undersöker rapporten framträder laboratorieslutsatsen.\n\nMata in koden du får fram:",
+                "prompt": "Granska den tekniska bevisanalysen i Kuvert 3. När ni undersöker rapporten framträder kriminallaboratoriets slutsats.\n\nMata in koden du får fram:",
                 "code": "HÖGER",
                 "summary": "Förövaren bekräftad HÖGERHÄNT.",
                 "hint": "Undersök dokumentet i Kuvert 3 mot ett fönster eller med en spegel för att avläsa den dolda slutsatsen.",
