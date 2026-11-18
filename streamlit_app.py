@@ -396,10 +396,10 @@ THEMES = {
             {
                 "title": "ETAPP 4: Slutgiltigt Chiffer & Utpekande",
                 "prompt": "Använd chiffermallen ur utredningsväskan över loggboken i Kuvert 4. Mata in koden ni får fram:",
-                "code": "7342",
-                "summary": "Den skyldige identifierad: ELICE (ID-7342).",
-                "hint": "Lägg hålmallens stjärnmärkta hörn mot loggbokens övre högra hörn. Läs av den 4-siffriga koden i fönstren och granska utredningsmaterialet.",
-                "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE SVENSSON (ID-7342)! Utmärkt utredningsarbete!",
+                "code": "728461",
+                "summary": "Den skyldige identifierad: ELICE (ID-728461).",
+                "hint": "Lägg hålmallens stjärnmärkta hörn mot loggbokens övre högra hörn. Läs av den 6-siffriga koden i fönstren och granska utredningsmaterialet.",
+                "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE SVENSSON (ID-728461)! Utmärkt utredningsarbete!",
                 "next_btn": "AVSLUTA UPPDRAGET"
             }
         ]
@@ -585,7 +585,7 @@ else:
                         is_correct = True
                     elif target_val == "HÖGER" and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT", "HÖGER HAND", "HÖGERHAND"]):
                         is_correct = True
-                    elif target_val in ["7342", "ELICE"] and any(v in user_val for v in ["7342", "ELICE", "ELISE", "ELICE SVENSSON", "SVENSSON"]):
+                    elif target_val in ["728461", "ELICE"] and any(v in user_val for v in ["728461", "ELICE", "ELISE", "ELICE SVENSSON", "SVENSSON"]):
                         is_correct = True
                     elif user_val == target_val:
                         is_correct = True
