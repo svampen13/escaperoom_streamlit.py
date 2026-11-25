@@ -418,6 +418,37 @@ THEMES = {
     }
 }
 
+
+# Live Ticking Fragments for Timers and Hints
+@st.fragment(run_every="1s")
+def render_live_game_timer():
+    if st.session_state.get("timer_minutes", 0) > 0:
+        elapsed = time.time() - st.session_state.get("start_time", time.time())
+        total_sec = st.session_state.timer_minutes * 60
+        remaining = max(0, int(total_sec - elapsed))
+        mins, secs = divmod(remaining, 60)
+        
+        timer_color = "#38bdf8" if remaining > 300 else "#ef4444"
+        st.markdown(f"<div class='timer-card' style='color:{timer_color};'>ÅTERSTÅENDE TID: {mins:02d}:{secs:02d}</div>", unsafe_allow_html=True)
+
+@st.fragment(run_every="1s")
+def render_live_hint_button():
+    lock_sec = st.session_state.get("hint_lock_minutes", 3) * 60
+    stage_start = st.session_state.get("stage_start_time", time.time())
+    time_since_stage_start = time.time() - stage_start
+    time_remaining = max(0, int(lock_sec - time_since_stage_start))
+    
+    btn_key = f"hint_lock_btn_{st.session_state.get('current_stage', 0)}"
+    
+    if time_remaining > 0:
+        mins_rem, secs_rem = divmod(time_remaining, 60)
+        st.button(f"🔒 Ledtråd låst ({mins_rem:02d}:{secs_rem:02d})", disabled=True, use_container_width=True, key=btn_key)
+    else:
+        if st.button("💡 Visa ledtråd", use_container_width=True, key=btn_key):
+            st.session_state.show_hint = True
+            st.rerun()
+
+
 # Session State Initialization
 if "game_started" not in st.session_state:
     st.session_state.game_started = False
@@ -528,14 +559,7 @@ else:
     stages = theme["stages"]
     
     # Optional Timer display
-    if st.session_state.timer_minutes > 0:
-        elapsed = time.time() - st.session_state.start_time
-        total_sec = st.session_state.timer_minutes * 60
-        remaining = max(0, int(total_sec - elapsed))
-        mins, secs = divmod(remaining, 60)
-        
-        timer_color = "#38bdf8" if remaining > 300 else "#ef4444"
-        st.markdown(f"<div class='timer-card' style='color:{timer_color};'>ÅTERSTÅENDE TID: {mins:02d}:{secs:02d}</div>", unsafe_allow_html=True)
+    render_live_game_timer()
     
     # Check if game completed
     if st.session_state.current_stage >= len(stages):
@@ -604,17 +628,7 @@ else:
                         play_audio("wrong")
                         st.error("Felaktig kod. Försök igen eller använd ledtråden.")
             with col2:
-                # Hint lock calculation
-                lock_sec = st.session_state.hint_lock_minutes * 60
-                time_since_stage_start = time.time() - st.session_state.get("stage_start_time", time.time())
-                time_remaining = max(0, int(lock_sec - time_since_stage_start))
-                
-                if time_remaining > 0:
-                    mins_rem, secs_rem = divmod(time_remaining, 60)
-                    st.button(f"🔒 Ledtråd låst ({mins_rem:02d}:{secs_rem:02d})", disabled=True, use_container_width=True)
-                else:
-                    if st.button("💡 Visa ledtråd", use_container_width=True):
-                        st.session_state.show_hint = True
+                render_live_hint_button()
             
             if st.session_state.show_hint:
                 st.markdown(f"<div class='hint-card'>{stage['hint']}</div>", unsafe_allow_html=True)
