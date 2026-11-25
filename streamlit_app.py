@@ -593,42 +593,47 @@ else:
         st.markdown(f"#### {stage['prompt']}")
         
         if not st.session_state.stage_cleared:
-            code_input = st.text_input("Mata in koden här:", key=f"code_in_{st.session_state.current_stage}", placeholder="KOD").strip()
-            
-            col1, col2 = st.columns(2)
+            col1, col2 = st.columns([1.5, 1], gap="medium")
             with col1:
-                if st.button("LÅS UPP", type="primary", use_container_width=True):
-                    # Flexible check for stage code
-                    user_val = code_input.upper()
-                    target_val = stage["code"].upper()
-                    
-                    is_correct = False
-                    if target_val == "42" and user_val in ["42", "SKOSTORLEK 42", "STORLEK 42"]:
-                        is_correct = True
-                    elif target_val == "1500" and any(v in user_val for v in ["1500", "15:00", "15.00", "KL 15:00", "KL. 15:00", "15 00", "15"]):
-                        is_correct = True
-                    elif target_val in ["HÖGER", "HOGER"] and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT", "HÖGER HAND", "HÖGERHAND", "HOGER", "HOGERHANT", "HOGER HAND", "HOGERHAND", "HAND"]):
-                        is_correct = True
-                    elif target_val in ["728461", "ELICE"] and any(v in user_val for v in ["728461", "ELICE", "ELISE", "SVENSSON", "SVENSON", "SKUGGAN", "ELICE SVENSSON"]):
-                        is_correct = True
-                    elif user_val == target_val:
-                        is_correct = True
-                    
-                    if is_correct:
-                        st.session_state.stage_cleared = True
-                        st.session_state.show_hint = False
-                        
-                        log_entry = f"Etapp {st.session_state.current_stage + 1}: Kod {stage['code']} ({stage['summary']})"
-                        if log_entry not in st.session_state.solved_log:
-                            st.session_state.solved_log.append(log_entry)
-                            
-                        play_audio("correct")
-                        st.rerun()
-                    else:
-                        play_audio("wrong")
-                        st.error("Felaktig kod. Försök igen eller använd ledtråden.")
+                with st.form(key=f"stage_form_{st.session_state.current_stage}", clear_on_submit=False):
+                    code_input = st.text_input("Mata in koden här:", key=f"code_in_{st.session_state.current_stage}", placeholder="KOD").strip()
+                    submit_btn = st.form_submit_button("LÅS UPP 🔓", type="primary", use_container_width=True)
             with col2:
+                st.write("")
                 render_live_hint_button()
+
+            if submit_btn:
+                user_val = code_input.upper()
+                user_clean = user_val.replace(" ", "").replace("-", "").replace(":", "").replace(".", "").replace(",", "").replace("&", "")
+                target_val = stage["code"].upper()
+                
+                is_correct = False
+                if target_val == "42" and ("42" in user_val or "STORLEK" in user_val or "SKO" in user_val):
+                    is_correct = True
+                elif target_val == "1500" and any(v in user_val for v in ["1500", "15:00", "15.00", "KL 15:00", "KL. 15:00", "15 00", "15"]):
+                    is_correct = True
+                elif target_val in ["HÖGER", "HOGER"] and (
+                    any(k in user_clean for k in ["HÖGER", "HOGER", "HAND", "HÖGERHÄNT", "HOGERHANT", "8OCH9", "89", "8EOCH9E", "ÅTTONDE", "ATTONDE", "NIONDE", "ORD"]) or "8" in user_val or "9" in user_val
+                ):
+                    is_correct = True
+                elif target_val in ["728461", "ELICE"] and any(k in user_clean for k in ["728461", "ELICE", "ELISE", "SVENSSON", "SVENSON", "SKUGGAN"]):
+                    is_correct = True
+                elif user_val == target_val or user_clean == target_val:
+                    is_correct = True
+                
+                if is_correct and code_input != "":
+                    st.session_state.stage_cleared = True
+                    st.session_state.show_hint = False
+                    
+                    log_entry = f"Etapp {st.session_state.current_stage + 1}: Kod {stage['code']} ({stage['summary']})"
+                    if log_entry not in st.session_state.solved_log:
+                        st.session_state.solved_log.append(log_entry)
+                        
+                    play_audio("correct")
+                    st.rerun()
+                else:
+                    play_audio("wrong")
+                    st.error("Felaktig kod. Försök igen eller använd ledtråden.")
             
             if st.session_state.show_hint:
                 st.markdown(f"<div class='hint-card'>{stage['hint']}</div>", unsafe_allow_html=True)
@@ -641,7 +646,8 @@ else:
                 render_elice_arrest_card()
                 
             st.write("")
-            if st.button(f"{stage['next_btn']}", type="primary", use_container_width=True):
+            next_key = f"next_stage_btn_{st.session_state.current_stage}"
+            if st.button(f"{stage['next_btn']}", type="primary", use_container_width=True, key=next_key):
                 st.session_state.current_stage += 1
                 st.session_state.stage_cleared = False
                 st.session_state.show_hint = False
