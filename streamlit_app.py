@@ -371,7 +371,7 @@ THEMES = {
                 "prompt": "Kartan i Kuvert 1 döljer en hemlighet. Använd utredningsverktygen för att avslöja var ledtråden är gömd.\n\nJämför fyndet du hittar på platsen med tabellen i kuvertet för att få fram rätt tal:",
                 "code": "42",
                 "summary": "Skostorlek 42 bekräftad.",
-                "hint": "Använd UV-lampan ur utredningsväskan på brottsplatskartan i Kuvert 1 för att hitta den utpekade platsen i klassrummet. Jämför fyndet med skostorlekstabellen.",
+                "hint": "Brottsplatskartan döljer ett spår som inte syns i vanligt ljus. Belys materialet ur rätt vinkel för att finna måttet som snävar in kretsen av misstänkta.",
                 "success_msg": "KOD GODKÄND!\n\nFörövarens skostorlek är bekräftad till 42. Jämför med personalkorten och eliminera de som inte har storlek 42.\n\n📍 HÄMTA KUVERT 2 I BOKHYLLAN!",
                 "next_btn": "FORTSÄTT TILL ETAPP 2 →"
             },
@@ -380,7 +380,7 @@ THEMES = {
                 "prompt": "Granska vittnesmålen i Kuvert 2. Hitta klockslaget då brottet begicks (4 siffror):",
                 "code": "1500",
                 "summary": "Tidpunkt för brottet bekräftad till kl. 15:00.",
-                "hint": "Räkna stavfelen i förhörsprotokollets fyra avsnitt (1 fel, 5 fel, 0 fel, 0 fel = 1500, dvs kl. 15:00). Jämför alibin på de kvarvarande personalkorten.",
+                "hint": "Sanningen ligger dold mellan raderna i förhören. Uppmärksamma förhörsledarens skrivfel – siffrorna gömmer sig där språket brister.",
                 "success_msg": "KOD GODKÄND!\n\nTidpunkten för brottet är bekräftad till kl. 15:00. Kontrollera alibin på personalkorten och eliminera de som har alibi kl. 15:00.\n\n📍 HÄMTA KUVERT 3 UNDER LÄRARBORDET!",
                 "next_btn": "FORTSÄTT TILL ETAPP 3 →"
             },
@@ -389,7 +389,7 @@ THEMES = {
                 "prompt": "Granska den tekniska bevisanalysen i Kuvert 3. När ni undersöker rapporten framträder kriminallaboratoriets slutsats.\n\nMata in koden du får fram:",
                 "code": "HÖGER",
                 "summary": "Förövaren bekräftad HÖGERHÄNT.",
-                "hint": "Undersök dokumentet i Kuvert 3 mot ett fönster eller med en spegel för att avläsa den dolda slutsatsen.",
+                "hint": "Svaret ser märkligt ut för blotta ögat. Betrakta dokumentet genom en reflektion för att kunna tyda slutsatsen.",
                 "success_msg": "KOD GODKÄND!\n\nFörövaren är bekräftad HÖGERHÄNT. Eliminera alla vänsterhänta misstänkta på personalkorten.\n\n📍 HÄMTA KUVERT 4 I SKÅPET LÄNGST BAK!",
                 "next_btn": "FORTSÄTT TILL ETAPP 4 →"
             },
@@ -398,7 +398,7 @@ THEMES = {
                 "prompt": "Använd chiffermallen ur utredningsväskan över loggboken i Kuvert 4. Mata in koden ni får fram:",
                 "code": "728461",
                 "summary": "Den skyldige identifierad: ELICE (ID-728461).",
-                "hint": "Lägg hålmallens stjärnmärkta hörn mot loggbokens övre högra hörn. Läs av den 6-siffriga koden i fönstren och granska utredningsmaterialet.",
+                "hint": "Enskilda papper berättar inte hela historien. Passa ihop mallen över matrisen så att lösningen träder fram i öppningarna.",
                 "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE SVENSSON (ID-728461)! Utmärkt utredningsarbete!",
                 "next_btn": "AVSLUTA UPPDRAGET"
             }
