@@ -661,3 +661,6 @@ else:
                 st.session_state.show_hint = False
                 st.session_state.stage_start_time = time.time()
                 st.rerun()
+                st.session_state.show_hint = False
+                st.session_state.stage_start_time = time.time()
+                st.rerun()
