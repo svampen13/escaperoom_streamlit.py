@@ -399,7 +399,7 @@ THEMES = {
                 "code": "728461",
                 "summary": "Den skyldige identifierad: ELICE (ID-728461).",
                 "hint": "Enskilda papper berättar inte hela historien. Passa ihop mallen över matrisen så att lösningen träder fram i öppningarna.",
-                "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE SVENSSON (ID-728461)! Utmärkt utredningsarbete!",
+                "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE! Utmärkt utredningsarbete!",
                 "next_btn": "AVSLUTA UPPDRAGET"
             }
         ]
@@ -609,7 +609,7 @@ else:
                         is_correct = True
                     elif target_val == "HÖGER" and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT", "HÖGER HAND", "HÖGERHAND"]):
                         is_correct = True
-                    elif target_val in ["728461", "ELICE"] and any(v in user_val for v in ["728461", "ELICE", "ELISE", "ELICE SVENSSON", "SVENSSON"]):
+                    elif target_val in ["728461", "ELICE"] and any(v in user_val for v in ["728461", "ELICE", "ELISE", "ELICE", "SVENSSON"]):
                         is_correct = True
                     elif user_val == target_val:
                         is_correct = True
