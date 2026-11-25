@@ -622,15 +622,21 @@ else:
                     is_correct = True
                 
                 if is_correct and code_input != "":
-                    st.session_state.stage_cleared = True
-                    st.session_state.show_hint = False
-                    
                     log_entry = f"Etapp {st.session_state.current_stage + 1}: Kod {stage['code']} ({stage['summary']})"
                     if log_entry not in st.session_state.solved_log:
                         st.session_state.solved_log.append(log_entry)
                         
-                    play_audio("correct")
-                    st.rerun()
+                    if st.session_state.current_stage == len(stages) - 1:
+                        # Final stage unlocked -> Direct transition to Victory screen!
+                        st.session_state.current_stage += 1
+                        st.session_state.stage_cleared = False
+                        st.session_state.show_hint = False
+                        st.rerun()
+                    else:
+                        st.session_state.stage_cleared = True
+                        st.session_state.show_hint = False
+                        play_audio("correct")
+                        st.rerun()
                 else:
                     play_audio("wrong")
                     st.error("Felaktig kod. Försök igen eller använd ledtråden.")
@@ -639,12 +645,14 @@ else:
                 st.markdown(f"<div class='hint-card'>{stage['hint']}</div>", unsafe_allow_html=True)
         
         else:
+            if st.session_state.current_stage == len(stages) - 1:
+                st.session_state.current_stage += 1
+                st.session_state.stage_cleared = False
+                st.session_state.show_hint = False
+                st.rerun()
+
             st.markdown(f"<div class='success-card'>{stage['success_msg']}</div>", unsafe_allow_html=True)
             
-            # Show arrest card with animated Jail Bars if clearing stage 4
-            if stage["code"] in ["ELICE", "728461"]:
-                render_elice_arrest_card()
-                
             st.write("")
             next_key = f"next_stage_btn_{st.session_state.current_stage}"
             if st.button(f"{stage['next_btn']}", type="primary", use_container_width=True, key=next_key):
