@@ -396,7 +396,7 @@ THEMES = {
             {
                 "title": "ETAPP 4: Slutgiltigt Chiffer & Utpekande",
                 "prompt": "Använd chiffermallen ur utredningsväskan över loggboken i Kuvert 4. Mata in koden ni får fram:",
-                "code": "728461",
+                "code": "ELICE",
                 "summary": "Den skyldige identifierad: ELICE (ID-728461).",
                 "hint": "Enskilda papper berättar inte hela historien. Passa ihop mallen över matrisen så att lösningen träder fram i öppningarna.",
                 "success_msg": "FALLET LÖST!\n\nDen skyldige i SNS är identifierad: ELICE! Utmärkt utredningsarbete!",
@@ -607,9 +607,9 @@ else:
                         is_correct = True
                     elif target_val == "1500" and any(v in user_val for v in ["1500", "15:00", "15.00", "KL 15:00", "KL. 15:00", "15 00", "15"]):
                         is_correct = True
-                    elif target_val == "HÖGER" and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT", "HÖGER HAND", "HÖGERHAND"]):
+                    elif target_val in ["HÖGER", "HOGER"] and any(v in user_val for v in ["HÖGER", "HÖGERHÄNT", "HÖGER-HÄNT", "HÖGER HAND", "HÖGERHAND", "HOGER", "HOGERHANT", "HOGER HAND", "HOGERHAND", "HAND"]):
                         is_correct = True
-                    elif target_val in ["728461", "ELICE"] and any(v in user_val for v in ["728461", "ELICE", "ELISE", "ELICE", "SVENSSON"]):
+                    elif target_val in ["728461", "ELICE"] and any(v in user_val for v in ["728461", "ELICE", "ELISE", "SVENSSON", "SVENSON", "SKUGGAN", "ELICE SVENSSON"]):
                         is_correct = True
                     elif user_val == target_val:
                         is_correct = True
@@ -637,7 +637,7 @@ else:
             st.markdown(f"<div class='success-card'>{stage['success_msg']}</div>", unsafe_allow_html=True)
             
             # Show arrest card with animated Jail Bars if clearing stage 4
-            if stage["code"] == "ELICE":
+            if stage["code"] in ["ELICE", "728461"]:
                 render_elice_arrest_card()
                 
             st.write("")
