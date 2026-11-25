@@ -616,7 +616,7 @@ else:
                     any(k in user_clean for k in ["HÖGER", "HOGER", "HAND", "HÖGERHÄNT", "HOGERHANT", "8OCH9", "89", "8EOCH9E", "ÅTTONDE", "ATTONDE", "NIONDE", "ORD"]) or "8" in user_val or "9" in user_val
                 ):
                     is_correct = True
-                elif target_val in ["728461", "ELICE"] and any(k in user_clean for k in ["728461", "ELICE", "ELISE", "SVENSSON", "SVENSON", "SKUGGAN"]):
+                elif target_val in ["728461", "ELICE"] and any(k in user_clean for k in ["728461", "ELICE", "ELISE", "SKUGGAN"]):
                     is_correct = True
                 elif user_val == target_val or user_clean == target_val:
                     is_correct = True
